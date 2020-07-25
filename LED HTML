@@ -1,0 +1,95 @@
+<html>
+<head>
+  <style>
+.div{
+  text-align: center;
+  margin-top: 30px;
+}
+.LED{
+  padding: 15px;
+  text-align: center;
+  margin-top: 120px;
+  margin-left: 600px;
+  width: 300px;
+  height: 100px;
+  background-color: Tomato;
+  color:white;
+}
+.button{
+  margin-left: 720px;
+  margin-top: 50px;
+  width:100px;
+  height: 100px;
+
+}
+
+</style>
+</head>
+<!-- Firebase DHT11 push_float() example  -->
+<body>
+  <div class="div">
+  <h2> Firebase LED Object data
+  </div>
+  <div class="LED">
+  <h2 id = "OUT_TEXT"> </h2>
+</div>
+  <!-- The core Firebase JS SDK is always required and must be listed first --> //파이어베이스 프로젝트 생성 하면 만들어지는 키입니다.
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
+     <script>
+       // Your web app's Firebase configuration
+       var firebaseConfig = {
+         apiKey: "AIzaSyCWfZbBU2SjgOvGMRzVvRYq0_JD-5NMdmo",
+         authDomain: "ledfirebase-166fd.firebaseapp.com",
+         databaseURL: "https://ledfirebase-166fd.firebaseio.com",
+         projectId: "ledfirebase-166fd",
+         storageBucket: "ledfirebase-166fd.appspot.com",
+         messagingSenderId: "667004333288",
+         appId: "1:667004333288:web:9ee1a748f4412a03942d5d",
+         measurementId: "G-01NKBC04DE"
+       };
+       // Initialize Firebase
+       firebase.initializeApp(firebaseConfig);
+       firebase.analytics();
+     </script>
+     //파이어베이스 프로젝트 생성 하면 만들어지는 키입니다.
+     <script>
+     </script>
+     <form>
+       <input type = 'button' onclick="onFunction();"  value = 'ON' class="button">
+       <input type = 'button' onclick="offFunction();" value = 'OFF' class="button">
+     </form>
+
+     <script>
+     var objRef = firebase.database().ref().child('LED_STATUS');
+     objRef.on("child_added", function(snapshot) { //child 오브젝트 단위로 스넵샷을 받아가지고
+     console.log(snapshot.val());// .val해서 출력
+     var newled = snapshot.val();
+     LED_STATUS.innerText = "LED is " + newled;
+     console.log(newled);
+       })
+       var dbRef = firebase.database().ref().child('LED_STATUS'); //key  value가 on이냐 off냐
+       // ON 버턴 클릭하여 DB 값 true 설정
+       function onFunction() {
+         dbRef.set('ON')
+       }
+       // OFF 버튼 클릭하여 DB 값 false 설정
+       function offFunction() {
+         dbRef.set('OFF')
+       }
+       // 현재 상태의 database 값 읽어오기
+       dbRef.on("value", function(snapshot) {
+         if (snapshot.val() == 'ON') {
+           OUT_TEXT.innerText = 'LED is ON'; //온이라는 text에 출력하고
+         } else if (snapshot.val() == 'OFF') {
+           OUT_TEXT.innerText = 'LED is OFF'; //오프라는 txt에 출력
+         }
+       }, function (error) {
+         console.log("Error: " + error.code);
+       });
+     </script>
+</body>
+</html>
