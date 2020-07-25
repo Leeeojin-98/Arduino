@@ -1,0 +1,98 @@
+<html>
+<head>
+  <style>
+.div{
+  text-align: center;
+  margin-top: 30px;
+}
+.temp{
+  padding: 15px;
+  text-align: center;
+  margin-top: 120px;
+  margin-left: 350px;
+  width: 300px;
+  height: 100px;
+  background-color: Tomato;
+  color:white;
+}
+.humi{
+  margin-left: 350px;
+  padding: 20px;
+  margin-top: 120px;
+  text-align: center;
+  width: 300px;
+  height: 100px;
+  background-color: DodgerBlue;
+  color: white;
+}
+.time{
+  margin-left: 350px;
+  padding: 20px;
+  margin-top: 120px;
+  text-align: center;
+  width: 300px;
+  height: 100px;
+  background-color: #B7F0B1;
+  color: white;
+}
+</style>
+</head>
+<!-- Firebase DHT11 push_float() example  -->
+<body>
+  <div class="div">
+  <h2> Firebase IoT Weather Monitor using Object Data
+  </div>
+  <div class="temp">
+  <h2 id="temp"> </h2> //온도 출력
+  </div>
+  <div class=time>
+  <h2 id="time"> </h2> //시간 출력
+  </div>
+  <div class="humi">
+  <h2 id="humi"> </h2> //습도 출력
+</div>
+
+     <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script>//이부분은 데이터베이스 키설정부분
+   <script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-app.js"></script>
+<script>    
+ src="https://www.gstatic.com/firebasejs/7.15.4/firebase-database.js"></script>
+     <!-- TODO: Add SDKs for Firebase products that you want to use
+          https://firebase.google.com/docs/web/setup#available-libraries -->
+<script>     
+ src="https://www.gstatic.com/firebasejs/7.15.4/firebase-analytics.js"></script>
+     <script> 
+       // Your web app's Firebase configuration
+       var firebaseConfig = {
+         apiKey: "AIzaSyBHniEkSMNAx5zvfpj42j5v-sOD82ayI34",
+         authDomain: "goodfirebase-a4f68.firebaseapp.com",
+         databaseURL: "https://goodfirebase-a4f68.firebaseio.com",
+         projectId: "goodfirebase-a4f68",
+         storageBucket: "goodfirebase-a4f68.appspot.com",
+         messagingSenderId: "541995948914",
+         appId: "1:541995948914:web:ca8a4330172c79cd9cdbeb",
+         measurementId: "G-WJ0ZCD7NL7"
+       };
+       // Initialize Firebase
+       firebase.initializeApp(firebaseConfig);
+       firebase.analytics();
+     </script>//이부분까지 데이터베이스 키설정 하는 부분
+
+  <script> //파이어베이스에 온도, 습도, 시간 가져오는 부분
+    // var dbRefHumi = firebase.database().ref().child('logDHT/Humidity');
+    // var dbRefTemp = firebase.database().ref().child('logDHT/Temperature');
+    var objRef = firebase.database().ref().child('logDHT/');
+    objRef.on("child_added", function(snapshot) {
+      console.log(snapshot.val());
+      var newHumi = snapshot.val().humidity;
+      var newTemp = snapshot.val().temperature;
+      var newtime = snapshot.val().time;
+      humi.innerText = "Humidity : " + newHumi + "%";
+      temp.innerText = "Temperature : " + newTemp + "℃";
+      time.innerText = "time : " + newtime
+      // console.log(newHumi);
+      // console.log(newTemp);
+    })
+  </script>
+</body>
+</html>
